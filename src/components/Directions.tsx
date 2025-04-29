@@ -4,9 +4,6 @@ import { RouteInput } from './RouteInput';
 import { VehicleInput } from './VehicleInput';
 import './Directions.css';
 
-// Current gas price in CAD per liter (you might want to make this dynamic or user-input)
-const GAS_PRICE_PER_LITER = 1.50;
-
 interface DirectionsProps {
   onShowMap: (show: boolean) => void;
   showMap: boolean;
