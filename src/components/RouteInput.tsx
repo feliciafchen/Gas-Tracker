@@ -6,7 +6,6 @@ interface RouteInputProps {
   destination: string;
   onOriginChange: (value: string) => void;
   onDestinationChange: (value: string) => void;
-  onSubmit: () => void;
 }
 
 export function RouteInput({ 
@@ -14,13 +13,9 @@ export function RouteInput({
   destination, 
   onOriginChange, 
   onDestinationChange,
-  onSubmit 
 }: RouteInputProps) {
   return (
-    <form className="directions-form" onSubmit={(e) => {
-      e.preventDefault();
-      onSubmit();
-    }}>
+    <div className="directions-form">
       <input
         type="text"
         placeholder="Enter origin address"
@@ -33,7 +28,6 @@ export function RouteInput({
         value={destination}
         onChange={(e) => onDestinationChange(e.target.value)}
       />
-      <button type="submit">Get Directions</button>
-    </form>
+    </div>
   );
 } 

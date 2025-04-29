@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import { RouteInput } from './RouteInput';
+import { VehicleInput } from './VehicleInput';
 import './Directions.css';
+
+// Current gas price in CAD per liter (you might want to make this dynamic or user-input)
+const GAS_PRICE_PER_LITER = 1.50;
 
 export function Directions() {
   const map = useMap();
@@ -12,6 +16,10 @@ export function Directions() {
   const [routeIndex, setRouteIndex] = useState(0);
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [year, setYear] = useState("");
+  const [fuelEfficiency, setFuelEfficiency] = useState("");
   const selected = routes[routeIndex];
   const leg = selected?.legs[0];
 
@@ -20,6 +28,11 @@ export function Directions() {
     setDirectionsService(new routesLibrary.DirectionsService());
     setDirectionsRenderer(new routesLibrary.DirectionsRenderer({map}));
   }, [routesLibrary, map]);
+
+  const calculateGasCost = (distanceInKm: number, fuelEfficiency: number) => {
+    const litersNeeded = (distanceInKm * fuelEfficiency) / 100;
+    return litersNeeded * GAS_PRICE_PER_LITER;
+  };
 
   const getDirections = () => {
     if(!directionsService || !directionsRenderer || !origin || !destination) return;
@@ -41,27 +54,43 @@ export function Directions() {
 
   return (
     <div className="directions-modal">
-      <h2>Route Information</h2>
+      <h2>Gas Cost Calculator</h2>
       <RouteInput
         origin={origin}
         destination={destination}
         onOriginChange={setOrigin}
         onDestinationChange={setDestination}
-        onSubmit={getDirections}
       />
-      {selected ? (
-        <div>
-          <p><strong>Route:</strong> {selected.summary}</p>
-          {leg && (
-            <>
-              <p><strong>Distance:</strong> {leg.distance?.text}</p>
-              <p><strong>Duration:</strong> {leg.duration?.text}</p>
-            </>
-          )}
+      <VehicleInput
+        make={make}
+        model={model}
+        year={year}
+        fuelEfficiency={fuelEfficiency}
+        onMakeChange={setMake}
+        onModelChange={setModel}
+        onYearChange={setYear}
+        onFuelEfficiencyChange={setFuelEfficiency}
+      />
+      {selected && leg && fuelEfficiency ? (
+        <div className="cost-summary">
+          <h3>Trip Summary</h3>
+          <p><strong>Distance:</strong> {leg.distance?.text}</p>
+          <p><strong>Estimated Gas Cost:</strong> ${calculateGasCost(
+            leg.distance?.value ? leg.distance.value / 1000 : 0,
+            parseFloat(fuelEfficiency)
+          ).toFixed(2)}</p>
+          <p className="gas-price-note">Based on current gas price: ${GAS_PRICE_PER_LITER}/L</p>
         </div>
       ) : (
-        <p>Enter addresses to get directions</p>
+        <></>
       )}
+      <button 
+        className="calculate-button"
+        onClick={getDirections}
+        disabled={!origin || !destination || !fuelEfficiency}
+      >
+        Calculate Gas Price
+      </button>
     </div>
   );
 } 
