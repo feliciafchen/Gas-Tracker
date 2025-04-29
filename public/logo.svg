@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gas Pump Body -->
+  <rect x="160" y="96" width="192" height="320" rx="32" fill="#4A90E2"/>
+  
+  <!-- Gas Pump Handle -->
+  <rect x="224" y="416" width="64" height="32" rx="16" fill="#2C3E50"/>
+  
+  <!-- Gas Pump Nozzle -->
+  <path d="M256 448 L256 480 L224 480 L224 448 Z" fill="#2C3E50"/>
+  
+  <!-- Fuel Gauge -->
+  <circle cx="256" cy="256" r="96" stroke="#2C3E50" stroke-width="16" fill="none"/>
+  <path d="M256 160 L256 256 L320 256" stroke="#2C3E50" stroke-width="16" stroke-linecap="round"/>
+  
+  <!-- Fuel Level Indicator -->
+  <path d="M256 256 L320 256" stroke="#4CAF50" stroke-width="16" stroke-linecap="round"/>
+</svg> 
