@@ -1,7 +1,8 @@
 .directions-modal {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -11,6 +12,14 @@
   max-width: 400px;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease-in-out;
+}
+
+.directions-modal-map-visible {
+  top: 20px;
+  left: auto;
+  right: 20px;
+  transform: none;
 }
 
 .directions-modal h2 {
@@ -249,7 +258,6 @@
 }
 
 .cost-summary {
-  margin-top: 20px;
   padding: 20px 0;
   border-top: 1px solid #eee;
 }

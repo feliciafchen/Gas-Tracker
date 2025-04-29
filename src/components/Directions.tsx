@@ -7,7 +7,12 @@ import './Directions.css';
 // Current gas price in CAD per liter (you might want to make this dynamic or user-input)
 const GAS_PRICE_PER_LITER = 1.50;
 
-export function Directions() {
+interface DirectionsProps {
+  onShowMap: (show: boolean) => void;
+  showMap: boolean;
+}
+
+export function Directions({ onShowMap, showMap }: DirectionsProps) {
   const map = useMap();
   const routesLibrary = useMapsLibrary("routes");
   const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
@@ -35,8 +40,14 @@ export function Directions() {
   };
 
   const calculateGasCost = (distanceInKm: number, fuelEfficiency: number) => {
-    const litersNeeded = (distanceInKm * fuelEfficiency) / 100;
-    return litersNeeded * parseFloat(gasPrice);
+    // Convert distance from km to miles (1 km = 0.621371 miles)
+    const distanceInMiles = distanceInKm * 0.621371;
+    // Convert fuel efficiency from L/100km to MPG
+    // Formula: MPG = 235.215 / (L/100km)
+    const mpg = 235.215 / fuelEfficiency;
+    // Calculate gallons needed
+    const gallonsNeeded = distanceInMiles / mpg;
+    return gallonsNeeded * parseFloat(gasPrice);
   };
 
   const getDirections = () => {
@@ -57,8 +68,11 @@ export function Directions() {
       provideRouteAlternatives: true
     })
     .then((response) => {
-      directionsRenderer.setDirections(response);
-      setRoutes(response.routes);
+      if (directionsRenderer && map) {
+        directionsRenderer.setDirections(response);
+        setRoutes(response.routes);
+        onShowMap(true);
+      }
     })
     .catch((error) => {
       console.error('Error getting directions:', error);
@@ -66,7 +80,7 @@ export function Directions() {
   };
 
   return (
-    <div className="directions-modal">
+    <div className={`directions-modal ${showMap ? 'directions-modal-map-visible' : ''}`}>
       <h2>Gas Cost Calculator</h2>
       <RouteInput
         origin={origin}
@@ -87,7 +101,7 @@ export function Directions() {
         onFuelEfficiencyChange={setFuelEfficiency}
       />
       <div className="gas-price-input">
-        <label htmlFor="gasPrice">Gas Price (USD/L)</label>
+        <label htmlFor="gasPrice">Gas Price (USD/gal)</label>
         <input
           type="number"
           id="gasPrice"
@@ -95,7 +109,7 @@ export function Directions() {
           onChange={(e) => setGasPrice(e.target.value)}
           step="0.01"
           min="0"
-          placeholder="e.g., 1.20"
+          placeholder="e.g., 3.50"
         />
       </div>
       {selected && fuelEfficiency ? (
@@ -106,7 +120,7 @@ export function Directions() {
             calculateTotalDistance(selected) / 1000,
             parseFloat(fuelEfficiency)
           ).toFixed(2)}</p>
-          <p className="gas-price-note">Based on gas price: ${gasPrice}/L</p>
+          <p className="gas-price-note">Based on gas price: ${gasPrice}/gal</p>
         </div>
       ) : (
         <></>
