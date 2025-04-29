@@ -5,6 +5,11 @@ export interface MenuItem {
   value: string;
 }
 
+export interface VehicleDetails {
+  id: string;
+  fuelEfficiency: number; // L/100km
+}
+
 const parseXmlResponse = async (response: Response): Promise<MenuItem[]> => {
   const text = await response.text();
   const parser = new DOMParser();
@@ -22,6 +27,33 @@ const parseXmlResponse = async (response: Response): Promise<MenuItem[]> => {
   return items;
 };
 
+const parseVehicleDetails = async (response: Response): Promise<VehicleDetails> => {
+  const text = await response.text();
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(text, "text/xml");
+  
+  // Get the vehicle ID from the first menuItem
+  const menuItem = xmlDoc.getElementsByTagName("menuItem")[0];
+  const id = menuItem?.getElementsByTagName("value")[0]?.textContent || '';
+  
+  // Fetch the vehicle details using the ID
+  const detailsResponse = await fetch(`${BASE_URL}/vehicle/${id}`);
+  const detailsText = await detailsResponse.text();
+  const detailsDoc = parser.parseFromString(detailsText, "text/xml");
+  
+  // Get the combined fuel efficiency in MPG
+  const mpg = detailsDoc.getElementsByTagName("comb08")[0]?.textContent;
+  
+  // Convert MPG to L/100km
+  // Formula: L/100km = 235.215 / MPG
+  const fuelEfficiency = mpg ? 235.215 / parseFloat(mpg) : 0;
+  
+  return {
+    id,
+    fuelEfficiency
+  };
+};
+
 export const getYears = async (): Promise<MenuItem[]> => {
   const response = await fetch(`${BASE_URL}/vehicle/menu/year`);
   return parseXmlResponse(response);
@@ -37,7 +69,7 @@ export const getModels = async (year: string, make: string): Promise<MenuItem[]>
   return parseXmlResponse(response);
 };
 
-export const getVehicleDetails = async (year: string, make: string, model: string): Promise<any> => {
+export const getVehicleDetails = async (year: string, make: string, model: string): Promise<VehicleDetails> => {
   const response = await fetch(`${BASE_URL}/vehicle/menu/options?year=${year}&make=${make}&model=${model}`);
-  return parseXmlResponse(response);
+  return parseVehicleDetails(response);
 }; 

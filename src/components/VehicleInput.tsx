@@ -76,6 +76,22 @@ export function VehicleInput({
     fetchModels();
   }, [year, make, onModelChange]);
 
+  useEffect(() => {
+    const fetchVehicleDetails = async () => {
+      if (!year || !make || !model) return;
+      setLoading(true);
+      try {
+        const details = await getVehicleDetails(year, make, model);
+        onFuelEfficiencyChange(details.fuelEfficiency.toFixed(1));
+      } catch (error) {
+        console.error('Error fetching vehicle details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchVehicleDetails();
+  }, [year, make, model, onFuelEfficiencyChange]);
+
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onYearChange(e.target.value);
   };
@@ -92,66 +108,61 @@ export function VehicleInput({
     <div className="vehicle-form">
       <h3>Vehicle Information</h3>
       <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="year">Year</label>
-          <select
-            id="year"
-            value={year}
-            onChange={handleYearChange}
-            disabled={loading}
-          >
-            <option value="">Select Year</option>
-            {years.map((yearItem) => (
-              <option key={yearItem.value} value={yearItem.value}>
-                {yearItem.text}
-              </option>
-            ))}
-          </select>
+        <div className="form-group vehicle-selection">
+          <div className="select-group">
+            <label htmlFor="year">Year</label>
+            <select
+              id="year"
+              value={year}
+              onChange={handleYearChange}
+              disabled={loading}
+            >
+              <option value="">Select Year</option>
+              {years.map((yearItem) => (
+                <option key={yearItem.value} value={yearItem.value}>
+                  {yearItem.text}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="select-group">
+            <label htmlFor="make">Make</label>
+            <select
+              id="make"
+              value={make}
+              onChange={handleMakeChange}
+              disabled={!year || loading}
+            >
+              <option value="">Select Make</option>
+              {makes.map((makeItem) => (
+                <option key={makeItem.value} value={makeItem.value}>
+                  {makeItem.text}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="select-group">
+            <label htmlFor="model">Model</label>
+            <select
+              id="model"
+              value={model}
+              onChange={handleModelChange}
+              disabled={!make || loading}
+            >
+              <option value="">Select Model</option>
+              {models.map((modelItem) => (
+                <option key={modelItem.value} value={modelItem.value}>
+                  {modelItem.text}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="make">Make</label>
-          <select
-            id="make"
-            value={make}
-            onChange={handleMakeChange}
-            disabled={!year || loading}
-          >
-            <option value="">Select Make</option>
-            {makes.map((makeItem) => (
-              <option key={makeItem.value} value={makeItem.value}>
-                {makeItem.text}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="model">Model</label>
-          <select
-            id="model"
-            value={model}
-            onChange={handleModelChange}
-            disabled={!make || loading}
-          >
-            <option value="">Select Model</option>
-            {models.map((modelItem) => (
-              <option key={modelItem.value} value={modelItem.value}>
-                {modelItem.text}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="fuelEfficiency">Fuel Efficiency (L/100km)</label>
-          <input
-            type="number"
-            id="fuelEfficiency"
-            value={fuelEfficiency}
-            onChange={(e) => onFuelEfficiencyChange(e.target.value)}
-            placeholder="e.g., 7.5"
-            step="0.1"
-          />
+        <div className="form-group fuel-efficiency">
+          <label htmlFor="fuelEfficiency">Fuel Efficiency</label>
+          <div className="fuel-efficiency-display">
+            {fuelEfficiency ? `${fuelEfficiency} L/100km` : 'Select vehicle'}
+          </div>
         </div>
       </div>
     </div>

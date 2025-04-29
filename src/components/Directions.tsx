@@ -21,6 +21,7 @@ export function Directions() {
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
   const [fuelEfficiency, setFuelEfficiency] = useState("");
+  const [gasPrice, setGasPrice] = useState("1.50");
   const selected = routes[routeIndex];
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export function Directions() {
 
   const calculateGasCost = (distanceInKm: number, fuelEfficiency: number) => {
     const litersNeeded = (distanceInKm * fuelEfficiency) / 100;
-    return litersNeeded * GAS_PRICE_PER_LITER;
+    return litersNeeded * parseFloat(gasPrice);
   };
 
   const getDirections = () => {
@@ -85,6 +86,18 @@ export function Directions() {
         onYearChange={setYear}
         onFuelEfficiencyChange={setFuelEfficiency}
       />
+      <div className="gas-price-input">
+        <label htmlFor="gasPrice">Gas Price (USD/L)</label>
+        <input
+          type="number"
+          id="gasPrice"
+          value={gasPrice}
+          onChange={(e) => setGasPrice(e.target.value)}
+          step="0.01"
+          min="0"
+          placeholder="e.g., 1.20"
+        />
+      </div>
       {selected && fuelEfficiency ? (
         <div className="cost-summary">
           <h3>Trip Summary</h3>
@@ -93,7 +106,7 @@ export function Directions() {
             calculateTotalDistance(selected) / 1000,
             parseFloat(fuelEfficiency)
           ).toFixed(2)}</p>
-          <p className="gas-price-note">Based on current gas price: ${GAS_PRICE_PER_LITER}/L</p>
+          <p className="gas-price-note">Based on gas price: ${gasPrice}/L</p>
         </div>
       ) : (
         <></>
