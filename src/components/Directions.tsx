@@ -23,7 +23,7 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
   const [fuelEfficiency, setFuelEfficiency] = useState("");
-  const [gasPrice, setGasPrice] = useState("1.50");
+  const [gasPrice, setGasPrice] = useState("4.50");
   const selected = routes[routeIndex];
 
   useEffect(() => {

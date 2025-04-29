@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import { Map } from '@vis.gl/react-google-maps';
+import React from 'react';
+import { useMap, Map } from '@vis.gl/react-google-maps';
 import { Directions } from './Directions';
 
 export function MapContainer() {
-  const [showMap, setShowMap] = useState(false);
+  const map = useMap();
+  const [showMap, setShowMap] = React.useState(false);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div 
+      data-testid="map-container"
+      style={{ width: '100%', height: '100%' }}
+    >
       <div style={{ 
         position: 'absolute',
         top: 0,
