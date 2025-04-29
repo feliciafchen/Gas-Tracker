@@ -33,15 +33,11 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
   }, [routesLibrary, map]);
 
   const calculateTotalDistance = (route: google.maps.DirectionsRoute) => {
-    return route.legs.reduce((total, leg) => total + (leg.distance?.value || 0), 0);
+    // Convert meters to miles (1 meter = 0.000621371 miles)
+    return route.legs.reduce((total, leg) => total + (leg.distance?.value || 0) * 0.000621371, 0);
   };
 
-  const calculateGasCost = (distanceInKm: number, fuelEfficiency: number) => {
-    // Convert distance from km to miles (1 km = 0.621371 miles)
-    const distanceInMiles = distanceInKm * 0.621371;
-    // Convert fuel efficiency from L/100km to MPG
-    // Formula: MPG = 235.215 / (L/100km)
-    const mpg = 235.215 / fuelEfficiency;
+  const calculateGasCost = (distanceInMiles: number, mpg: number) => {
     // Calculate gallons needed
     const gallonsNeeded = distanceInMiles / mpg;
     return gallonsNeeded * parseFloat(gasPrice);
@@ -112,9 +108,9 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
       {selected && fuelEfficiency ? (
         <div className="cost-summary">
           <h3>Trip Summary</h3>
-          <p><strong>Total Distance:</strong> {(calculateTotalDistance(selected) / 1000).toFixed(1)} km</p>
+          <p><strong>Total Distance:</strong> {calculateTotalDistance(selected).toFixed(1)} miles</p>
           <p><strong>Estimated Gas Cost:</strong> ${calculateGasCost(
-            calculateTotalDistance(selected) / 1000,
+            calculateTotalDistance(selected),
             parseFloat(fuelEfficiency)
           ).toFixed(2)}</p>
           <p className="gas-price-note">Based on gas price: ${gasPrice}/gal</p>

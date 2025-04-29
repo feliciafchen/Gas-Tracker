@@ -161,7 +161,7 @@ export function VehicleInput({
         <div className="form-group fuel-efficiency">
           <label htmlFor="fuelEfficiency">Fuel Efficiency</label>
           <div className="fuel-efficiency-display">
-            {fuelEfficiency ? `${fuelEfficiency} L/100km` : 'Select vehicle'}
+            {fuelEfficiency ? `${fuelEfficiency} MPG` : 'Select vehicle'}
           </div>
         </div>
       </div>

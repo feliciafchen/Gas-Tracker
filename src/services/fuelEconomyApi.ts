@@ -7,7 +7,7 @@ export interface MenuItem {
 
 export interface VehicleDetails {
   id: string;
-  fuelEfficiency: number; // L/100km
+  fuelEfficiency: number; // MPG
 }
 
 const parseXmlResponse = async (response: Response): Promise<MenuItem[]> => {
@@ -43,10 +43,7 @@ const parseVehicleDetails = async (response: Response): Promise<VehicleDetails> 
   
   // Get the combined fuel efficiency in MPG
   const mpg = detailsDoc.getElementsByTagName("comb08")[0]?.textContent;
-  
-  // Convert MPG to L/100km
-  // Formula: L/100km = 235.215 / MPG
-  const fuelEfficiency = mpg ? 235.215 / parseFloat(mpg) : 0;
+  const fuelEfficiency = mpg ? parseFloat(mpg) : 0;
   
   return {
     id,
