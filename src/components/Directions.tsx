@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { RouteInput } from './RouteInput';
+import './Directions.css';
 
 export function Directions() {
   const map = useMap();
@@ -8,6 +10,8 @@ export function Directions() {
   const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
   const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
   const [routeIndex, setRouteIndex] = useState(0);
+  const [origin, setOrigin] = useState("");
+  const [destination, setDestination] = useState("");
   const selected = routes[routeIndex];
   const leg = selected?.legs[0];
 
@@ -17,12 +21,12 @@ export function Directions() {
     setDirectionsRenderer(new routesLibrary.DirectionsRenderer({map}));
   }, [routesLibrary, map]);
 
-  useEffect(() => {
-    if(!directionsService || !directionsRenderer) return;
+  const getDirections = () => {
+    if(!directionsService || !directionsRenderer || !origin || !destination) return;
 
     directionsService.route({
-      origin: "100 Front St, Toronto ON",
-      destination: "500 College St, Toronto ON",
+      origin,
+      destination,
       travelMode: google.maps.TravelMode.DRIVING,
       provideRouteAlternatives: true
     })
@@ -30,13 +34,34 @@ export function Directions() {
       directionsRenderer.setDirections(response);
       setRoutes(response.routes);
     })
-  }, [directionsService, directionsRenderer]);
+    .catch((error) => {
+      console.error('Error getting directions:', error);
+    });
+  };
 
-  console.log(routes)
-
-  if (!leg) return null;
-
-  console.log(selected);
-
-  return null;
+  return (
+    <div className="directions-modal">
+      <h2>Route Information</h2>
+      <RouteInput
+        origin={origin}
+        destination={destination}
+        onOriginChange={setOrigin}
+        onDestinationChange={setDestination}
+        onSubmit={getDirections}
+      />
+      {selected ? (
+        <div>
+          <p><strong>Route:</strong> {selected.summary}</p>
+          {leg && (
+            <>
+              <p><strong>Distance:</strong> {leg.distance?.text}</p>
+              <p><strong>Duration:</strong> {leg.duration?.text}</p>
+            </>
+          )}
+        </div>
+      ) : (
+        <p>Enter addresses to get directions</p>
+      )}
+    </div>
+  );
 } 
