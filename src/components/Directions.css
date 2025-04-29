@@ -47,6 +47,52 @@
   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
+.stop-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.stop-input input {
+  flex: 1;
+}
+
+.remove-stop {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.remove-stop:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.add-stop {
+  background: none;
+  border: 1px dashed #4a90e2;
+  color: #4a90e2;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.add-stop:hover {
+  background-color: #f0f7ff;
+}
+
 .calculate-button {
   margin-top: auto;
   padding: 12px 16px;
