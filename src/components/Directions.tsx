@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import { RouteInput } from './RouteInput';
 import { VehicleInput } from './VehicleInput';
+import { GasPriceInput } from './GasPriceInput';
 import './Directions.css';
 
 interface DirectionsProps {
@@ -24,6 +25,7 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
   const [year, setYear] = useState("");
   const [fuelEfficiency, setFuelEfficiency] = useState("");
   const [gasPrice, setGasPrice] = useState("4.50");
+  const [gasPriceError, setGasPriceError] = useState("");
   const selected = routes[routeIndex];
 
   useEffect(() => {
@@ -93,18 +95,11 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
         onYearChange={setYear}
         onFuelEfficiencyChange={setFuelEfficiency}
       />
-      <div className="gas-price-input">
-        <label htmlFor="gasPrice">Gas Price (USD/gal)</label>
-        <input
-          type="number"
-          id="gasPrice"
-          value={gasPrice}
-          onChange={(e) => setGasPrice(e.target.value)}
-          step="0.01"
-          min="0"
-          placeholder="e.g., 3.50"
-        />
-      </div>
+      <GasPriceInput
+        gasPrice={gasPrice}
+        onGasPriceChange={setGasPrice}
+        onError={setGasPriceError}
+      />
       {selected && fuelEfficiency ? (
         <div className="cost-summary">
           <h3>Trip Summary</h3>
@@ -121,7 +116,7 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
       <button 
         className="calculate-button"
         onClick={getDirections}
-        disabled={!origin || !destination || !fuelEfficiency}
+        disabled={!origin || !destination || !fuelEfficiency || !!gasPriceError}
       >
         Calculate Gas Price
       </button>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useMapsLibrary } from '@vis.gl/react-google-maps';
 import './Directions.css';
 
 interface RouteInputProps {
@@ -18,6 +19,64 @@ export function RouteInput({
   onDestinationChange,
   onStopsChange,
 }: RouteInputProps) {
+  const placesLibrary = useMapsLibrary('places');
+  const originInputRef = useRef<HTMLInputElement>(null);
+  const destinationInputRef = useRef<HTMLInputElement>(null);
+  const stopsInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    if (!placesLibrary) return;
+
+    // Initialize autocomplete for origin
+    if (originInputRef.current) {
+      const originAutocomplete = new placesLibrary.Autocomplete(originInputRef.current, {
+        fields: ['formatted_address', 'geometry', 'name'],
+        types: ['address']
+      });
+
+      originAutocomplete.addListener('place_changed', () => {
+        const place = originAutocomplete.getPlace();
+        if (place.formatted_address) {
+          onOriginChange(place.formatted_address);
+        }
+      });
+    }
+
+    // Initialize autocomplete for destination
+    if (destinationInputRef.current) {
+      const destinationAutocomplete = new placesLibrary.Autocomplete(destinationInputRef.current, {
+        fields: ['formatted_address', 'geometry', 'name'],
+        types: ['address']
+      });
+
+      destinationAutocomplete.addListener('place_changed', () => {
+        const place = destinationAutocomplete.getPlace();
+        if (place.formatted_address) {
+          onDestinationChange(place.formatted_address);
+        }
+      });
+    }
+
+    // Initialize autocomplete for stops
+    stopsInputRefs.current.forEach((inputRef, index) => {
+      if (inputRef) {
+        const stopAutocomplete = new placesLibrary.Autocomplete(inputRef, {
+          fields: ['formatted_address', 'geometry', 'name'],
+          types: ['address']
+        });
+
+        stopAutocomplete.addListener('place_changed', () => {
+          const place = stopAutocomplete.getPlace();
+          if (place.formatted_address) {
+            const newStops = [...stops];
+            newStops[index] = place.formatted_address;
+            onStopsChange(newStops);
+          }
+        });
+      }
+    });
+  }, [placesLibrary, stops, onOriginChange, onDestinationChange, onStopsChange]);
+
   const addStop = () => {
     onStopsChange([...stops, '']);
   };
@@ -36,6 +95,7 @@ export function RouteInput({
   return (
     <div className="directions-form">
       <input
+        ref={originInputRef}
         type="text"
         placeholder="Enter origin address"
         value={origin}
@@ -45,6 +105,9 @@ export function RouteInput({
       {stops.map((stop, index) => (
         <div key={index} className="stop-input">
           <input
+            ref={(el) => {
+              stopsInputRefs.current[index] = el;
+            }}
             type="text"
             placeholder={`Stop ${index + 1}`}
             value={stop}
@@ -69,6 +132,7 @@ export function RouteInput({
       </button>
 
       <input
+        ref={destinationInputRef}
         type="text"
         placeholder="Enter destination address"
         value={destination}
