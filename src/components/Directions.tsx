@@ -48,7 +48,7 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
   };
 
   const getDirections = () => {
-    if(!directionsService || !directionsRenderer || !origin || !destination) return;
+    if(!directionsService || !directionsRenderer || !origin || !destination || !gasPrice) return;
 
     setRouteError(""); // Clear any previous errors
 
@@ -159,7 +159,7 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
         <button 
           className="calculate-button"
           onClick={getDirections}
-          disabled={!origin || !destination || !fuelEfficiency || !!gasPriceError}
+          disabled={!origin || !destination || !fuelEfficiency || !!gasPriceError || !gasPrice}
         >
           Calculate Gas Price
         </button>

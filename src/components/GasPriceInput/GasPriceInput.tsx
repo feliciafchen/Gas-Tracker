@@ -17,7 +17,7 @@ export function GasPriceInput({ gasPrice, onGasPriceChange, onError }: GasPriceI
 
   const validateGasPrice = (price: string) => {
     const numPrice = parseFloat(price);
-    if (isNaN(numPrice)) {
+    if (isNaN(numPrice) || !price) {
       onError("Please enter a valid gas price");
       return false;
     }
