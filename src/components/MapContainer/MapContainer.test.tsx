@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MapContainer } from '../MapContainer';
+import { MapContainer } from './MapContainer';
 import { useMap } from '@vis.gl/react-google-maps';
 
 // Mock the Google Maps hook

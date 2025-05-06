@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
-import './Directions.css';
+import '../Directions.css';
 
 interface RouteInputProps {
   origin: string;

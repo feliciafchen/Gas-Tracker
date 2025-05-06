@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { VehicleInput } from '../VehicleInput';
+import { VehicleInput } from './VehicleInput';
 import * as fuelEconomyApi from '../../services/fuelEconomyApi';
 
 // Mock the API functions

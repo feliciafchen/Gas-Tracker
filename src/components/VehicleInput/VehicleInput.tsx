@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Directions.css';
+import '../Directions.css';
 import { getYears, getMakes, getModels, getVehicleDetails, MenuItem } from '../../services/fuelEconomyApi';
 
 interface VehicleInputProps {
