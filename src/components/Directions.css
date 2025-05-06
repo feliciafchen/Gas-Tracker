@@ -15,17 +15,17 @@
   transition: all 0.3s ease-in-out;
 }
 
+.directions-modal h2 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .directions-modal-map-visible {
   top: 20px;
   left: auto;
   right: 20px;
   transform: none;
-}
-
-.directions-modal h2 {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  font-weight: bold;
 }
 
 .directions-modal p {
@@ -105,8 +105,15 @@
   background-color: #f0f7ff;
 }
 
-.calculate-button {
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   margin-top: auto;
+}
+
+.calculate-button {
+  width: 100%;
   padding: 10px 14px;
   background-color: #4a90e2;
   color: white;
@@ -115,7 +122,6 @@
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
-  width: 100%;
   transition: background-color 0.2s;
 }
 
@@ -126,6 +132,24 @@
 .calculate-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.restart-button {
+  align-self: center;
+  padding: 4px 8px;
+  background: none;
+  color: #999;
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 400;
+  transition: all 0.2s;
+  white-space: nowrap;
+  text-decoration: underline;
+}
+
+.restart-button:hover {
+  color: #666;
 }
 
 .vehicle-form {
@@ -159,7 +183,7 @@
   color: #666;
 }
 
-.form-group input {
+.form-group input, .form-group select {
   padding: 6px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -170,16 +194,6 @@
   outline: none;
   border-color: #4a90e2;
   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-}
-
-.form-group select {
-  padding: 6px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 13px;
-  width: 100%;
-  background-color: white;
-  cursor: pointer;
 }
 
 .form-group select:focus {
@@ -235,6 +249,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 0;
 }
 
 .gas-price-input label {
@@ -275,4 +290,24 @@
   font-size: 11px;
   color: #666;
   margin-top: 8px;
+}
+
+.error-message {
+  color: #dc2626;
+  background-color: #fef2f2;
+  border-left: 4px solid #dc2626;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.error-message::before {
+  content: "⚠️";
+  font-size: 16px;
 }
