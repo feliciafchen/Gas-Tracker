@@ -16,7 +16,6 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
   const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
   const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
   const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
-  const [routeIndex, setRouteIndex] = useState(0);
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [stops, setStops] = useState<string[]>([]);
@@ -29,7 +28,7 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
   const [gasPriceError, setGasPriceError] = useState("");
   const [hasCalculated, setHasCalculated] = useState(false);
   const [routeError, setRouteError] = useState("");
-  const selected = routes[routeIndex];
+  const selected = routes[0];
 
   useEffect(() => {
     if (!routesLibrary || !map) return;
@@ -100,7 +99,7 @@ export function Directions({ onShowMap, showMap }: DirectionsProps) {
     setModel("");
     setYear("");
     setFuelEfficiency("");
-    setGasPrice("4.50");
+    setGasPrice("");
     setCalculatedGasPrice("4.50");
     setGasPriceError("");
     setHasCalculated(false);
