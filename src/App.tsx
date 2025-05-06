@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { APIProvider } from '@vis.gl/react-google-maps';
-import { MapContainer } from './components/MapContainer';
+import { MapContainer } from './components/MapContainer/MapContainer';
 
 function App() {
   const position = { lat: 43.6532, lng: -79.3832 };

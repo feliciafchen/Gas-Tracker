@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMap, Map } from '@vis.gl/react-google-maps';
-import { Directions } from './Directions';
+import { Directions } from '../Directions';
 
 export function MapContainer() {
   const map = useMap();

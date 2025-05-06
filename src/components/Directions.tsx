@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
-import { RouteInput } from './RouteInput';
-import { VehicleInput } from './VehicleInput';
-import { GasPriceInput } from './GasPriceInput';
+import { RouteInput } from './RouteInput/RouteInput';
+import { VehicleInput } from './VehicleInput/VehicleInput';
+import { GasPriceInput } from './GasPriceInput/GasPriceInput';
 import './Directions.css';
 
 interface DirectionsProps {

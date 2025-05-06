@@ -1,16 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Directions } from '../Directions';
+import { Directions } from './Directions';
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 
-// Mock the Google Maps hooks
 jest.mock('@vis.gl/react-google-maps', () => ({
   useMap: jest.fn(),
   useMapsLibrary: jest.fn(),
 }));
 
-// Mock Google Maps objects
 const mockDirectionsService = {
   route: jest.fn(),
 };
@@ -71,7 +69,6 @@ describe('Directions', () => {
   it('enables calculate button when all required fields are filled', async () => {
     render(<Directions {...mockProps} />);
     
-    // Fill in required fields
     const originInput = screen.getByPlaceholderText('Enter origin address');
     const destinationInput = screen.getByPlaceholderText('Enter destination address');
     const gasPriceInput = screen.getByLabelText('Gas Price (USD/gal)');
@@ -81,7 +78,6 @@ describe('Directions', () => {
     await userEvent.clear(gasPriceInput);
     await userEvent.type(gasPriceInput, '3.50');
     
-    // Mock vehicle selection
     const mockRoute = {
       legs: [
         { distance: { value: 100000 } }, // 100km in meters
@@ -92,13 +88,11 @@ describe('Directions', () => {
       routes: [mockRoute],
     });
     
-    // Simulate vehicle selection
     const mockFuelEfficiency = '30';
     const mockVehicleDetails = {
       fuelEfficiency: parseFloat(mockFuelEfficiency),
     };
     
-    // Mock the vehicle selection
     const mockVehicleInput = {
       make: 'Toyota',
       model: 'Camry',
@@ -106,7 +100,6 @@ describe('Directions', () => {
       fuelEfficiency: mockFuelEfficiency,
     };
     
-    // Calculate route
     const calculateButton = screen.getByText('Calculate Gas Price');
     await userEvent.click(calculateButton);
     
@@ -124,14 +117,12 @@ describe('Directions', () => {
   it('shows trip summary when route is calculated', async () => {
     render(<Directions {...mockProps} />);
     
-    // Fill in required fields
     const originInput = screen.getByPlaceholderText('Enter origin address');
     const destinationInput = screen.getByPlaceholderText('Enter destination address');
     
     await userEvent.type(originInput, 'New York');
     await userEvent.type(destinationInput, 'Los Angeles');
     
-    // Mock vehicle selection and route calculation
     const mockRoute = {
       legs: [
         { distance: { value: 100000 } }, // 100km in meters
@@ -142,13 +133,11 @@ describe('Directions', () => {
       routes: [mockRoute],
     });
     
-    // Simulate vehicle selection
     const mockFuelEfficiency = '30';
     const mockVehicleDetails = {
       fuelEfficiency: parseFloat(mockFuelEfficiency),
     };
     
-    // Mock the vehicle selection
     const mockVehicleInput = {
       make: 'Toyota',
       model: 'Camry',
@@ -156,7 +145,6 @@ describe('Directions', () => {
       fuelEfficiency: mockFuelEfficiency,
     };
     
-    // Calculate route
     const calculateButton = screen.getByText('Calculate Gas Price');
     await userEvent.click(calculateButton);
     
@@ -172,14 +160,12 @@ describe('Directions', () => {
     
     render(<Directions {...mockProps} />);
     
-    // Fill in required fields
     const originInput = screen.getByPlaceholderText('Enter origin address');
     const destinationInput = screen.getByPlaceholderText('Enter destination address');
     
     await userEvent.type(originInput, 'New York');
     await userEvent.type(destinationInput, 'Los Angeles');
     
-    // Mock API error
     mockDirectionsService.route.mockRejectedValue(new Error('API Error'));
     
     const calculateButton = screen.getByText('Calculate Gas Price');

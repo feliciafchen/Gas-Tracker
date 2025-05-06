@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface GasPriceInputProps {
   gasPrice: string;
@@ -7,6 +7,14 @@ interface GasPriceInputProps {
 }
 
 export function GasPriceInput({ gasPrice, onGasPriceChange, onError }: GasPriceInputProps) {
+  useEffect(() => {
+    if (gasPrice) {
+      validateGasPrice(gasPrice);
+    } else {
+      onError("");
+    }
+  }, [gasPrice]);
+
   const validateGasPrice = (price: string) => {
     const numPrice = parseFloat(price);
     if (isNaN(numPrice)) {
@@ -24,11 +32,6 @@ export function GasPriceInput({ gasPrice, onGasPriceChange, onError }: GasPriceI
   const handleGasPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     onGasPriceChange(value);
-    if (value) {
-      validateGasPrice(value);
-    } else {
-      onError("");
-    }
   };
 
   return (
