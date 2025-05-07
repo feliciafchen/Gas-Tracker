@@ -30,14 +30,15 @@ export function RouteInput({
     // initializing da autocomplete for origin
     if (originInputRef.current) {
       const originAutocomplete = new placesLibrary.Autocomplete(originInputRef.current, {
-        fields: ['formatted_address', 'geometry', 'name'],
-        types: ['address']
+        fields: ['formatted_address', 'geometry', 'name']
       });
 
       originAutocomplete.addListener('place_changed', () => {
         const place = originAutocomplete.getPlace();
         if (place.formatted_address) {
           onOriginChange(place.formatted_address);
+        } else if (place.name) {
+          onOriginChange(place.name);
         }
       });
     }
@@ -45,14 +46,15 @@ export function RouteInput({
     // destination
     if (destinationInputRef.current) {
       const destinationAutocomplete = new placesLibrary.Autocomplete(destinationInputRef.current, {
-        fields: ['formatted_address', 'geometry', 'name'],
-        types: ['address']
+        fields: ['formatted_address', 'geometry', 'name']
       });
 
       destinationAutocomplete.addListener('place_changed', () => {
         const place = destinationAutocomplete.getPlace();
         if (place.formatted_address) {
           onDestinationChange(place.formatted_address);
+        } else if (place.name) {
+          onDestinationChange(place.name);
         }
       });
     }
@@ -61,8 +63,7 @@ export function RouteInput({
     stopsInputRefs.current.forEach((inputRef, index) => {
       if (inputRef) {
         const stopAutocomplete = new placesLibrary.Autocomplete(inputRef, {
-          fields: ['formatted_address', 'geometry', 'name'],
-          types: ['address']
+          fields: ['formatted_address', 'geometry', 'name']
         });
 
         stopAutocomplete.addListener('place_changed', () => {
@@ -70,6 +71,10 @@ export function RouteInput({
           if (place.formatted_address) {
             const newStops = [...stops];
             newStops[index] = place.formatted_address;
+            onStopsChange(newStops);
+          } else if (place.name) {
+            const newStops = [...stops];
+            newStops[index] = place.name;
             onStopsChange(newStops);
           }
         });
@@ -97,7 +102,7 @@ export function RouteInput({
       <input
         ref={originInputRef}
         type="text"
-        placeholder="Enter origin address"
+        placeholder="Enter origin (address, restaurant, etc.)"
         value={origin}
         onChange={(e) => onOriginChange(e.target.value)}
       />
@@ -109,7 +114,7 @@ export function RouteInput({
               stopsInputRefs.current[index] = el;
             }}
             type="text"
-            placeholder={`Stop ${index + 1}`}
+            placeholder={`Stop ${index + 1} (address, restaurant, etc.)`}
             value={stop}
             onChange={(e) => updateStop(index, e.target.value)}
           />
@@ -134,7 +139,7 @@ export function RouteInput({
       <input
         ref={destinationInputRef}
         type="text"
-        placeholder="Enter destination address"
+        placeholder="Enter destination (address, restaurant, etc.)"
         value={destination}
         onChange={(e) => onDestinationChange(e.target.value)}
       />
