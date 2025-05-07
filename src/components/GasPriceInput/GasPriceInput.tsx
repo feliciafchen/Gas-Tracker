@@ -38,6 +38,7 @@ export function GasPriceInput({ gasPrice, onGasPriceChange, onError }: GasPriceI
     <div className="gas-price-input">
       <label htmlFor="gasPrice">Gas Price (USD/gal)</label>
       <input
+        data-testid="gasPriceInput"
         type="number"
         id="gasPrice"
         value={gasPrice}

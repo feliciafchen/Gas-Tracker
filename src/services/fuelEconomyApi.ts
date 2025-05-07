@@ -7,7 +7,7 @@ export interface MenuItem {
 
 export interface VehicleDetails {
   id: string;
-  fuelEfficiency: number; // MPG
+  fuelEfficiency: number;
 }
 
 const parseXmlResponse = async (response: Response): Promise<MenuItem[]> => {

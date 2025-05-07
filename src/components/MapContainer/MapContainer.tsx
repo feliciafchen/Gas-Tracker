@@ -1,9 +1,8 @@
 import React from 'react';
-import { useMap, Map } from '@vis.gl/react-google-maps';
+import { Map } from '@vis.gl/react-google-maps';
 import { Directions } from '../Directions';
 
 export function MapContainer() {
-  const map = useMap();
   const [showMap, setShowMap] = React.useState(false);
 
   return (

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { GasPriceInput } from './GasPriceInput';
 
@@ -19,7 +19,7 @@ describe('GasPriceInput', () => {
       />
     );
 
-    const input = screen.getByLabelText(/gas price/i);
+    const input = screen.getByTestId("gasPriceInput");
     expect(input).toHaveValue(4.50);
   });
 
@@ -32,7 +32,7 @@ describe('GasPriceInput', () => {
       />
     );
 
-    const input = screen.getByLabelText(/gas price/i);
+    const input = screen.getByTestId("gasPriceInput");
     await userEvent.type(input, '3.75');
 
     expect(mockOnGasPriceChange).toHaveBeenCalledWith('3.75');
@@ -47,7 +47,7 @@ describe('GasPriceInput', () => {
       />
     );
 
-    const input = screen.getByLabelText(/gas price/i);
+    const input = screen.getByTestId("gasPriceInput");
     await userEvent.type(input, 'abc');
 
     expect(input).toHaveValue(null);
@@ -63,7 +63,7 @@ describe('GasPriceInput', () => {
       />
     );
 
-    const input = screen.getByLabelText(/gas price/i);
+    const input = screen.getByTestId("gasPriceInput");
     await userEvent.type(input, '-1');
 
     expect(mockOnError).not.toHaveBeenCalledWith();
@@ -78,7 +78,7 @@ describe('GasPriceInput', () => {
       />
     );
 
-    const input = screen.getByLabelText(/gas price/i);
+    const input = screen.getByTestId("gasPriceInput");
     await userEvent.type(input, 'abc');
     await userEvent.clear(input);
 
