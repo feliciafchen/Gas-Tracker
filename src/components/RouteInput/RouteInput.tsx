@@ -27,7 +27,7 @@ export function RouteInput({
   useEffect(() => {
     if (!placesLibrary) return;
 
-    // Initialize autocomplete for origin
+    // initializing da autocomplete for origin
     if (originInputRef.current) {
       const originAutocomplete = new placesLibrary.Autocomplete(originInputRef.current, {
         fields: ['formatted_address', 'geometry', 'name'],
@@ -42,7 +42,7 @@ export function RouteInput({
       });
     }
 
-    // Initialize autocomplete for destination
+    // destination
     if (destinationInputRef.current) {
       const destinationAutocomplete = new placesLibrary.Autocomplete(destinationInputRef.current, {
         fields: ['formatted_address', 'geometry', 'name'],
@@ -57,7 +57,7 @@ export function RouteInput({
       });
     }
 
-    // Initialize autocomplete for stops
+    // stops
     stopsInputRefs.current.forEach((inputRef, index) => {
       if (inputRef) {
         const stopAutocomplete = new placesLibrary.Autocomplete(inputRef, {
