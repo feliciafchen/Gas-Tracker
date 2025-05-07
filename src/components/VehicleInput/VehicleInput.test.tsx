@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { VehicleInput } from './VehicleInput';
 import * as fuelEconomyApi from '../../services/fuelEconomyApi';
@@ -52,7 +51,6 @@ describe('VehicleInput', () => {
   });
 
   it('allows user to select a make if year is selected', async () => {
-    // Mock both APIs
     const props = {
       make: '',
       model: '',
@@ -66,10 +64,8 @@ describe('VehicleInput', () => {
 
     render(<VehicleInput {...props} />);
     
-    // Wait for make options to load
     await screen.findByText('Toyota');
     
-    // Now it's safe to interact with the dropdown
     const makeDropdown = screen.getByLabelText('Make');
     fireEvent.change(makeDropdown, { target: { value: 'Toyota' } });
     
@@ -77,5 +73,4 @@ describe('VehicleInput', () => {
       expect(props.onMakeChange).toHaveBeenCalledWith('Toyota');
     });
   });
-
 });
