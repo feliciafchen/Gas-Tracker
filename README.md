@@ -1,46 +1,148 @@
-# Getting Started with Create React App
+# Gas Tracker – Route Fuel Cost Calculator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Gas Tracker is a React + TypeScript web application that helps drivers estimate **how much a road-trip will cost in fuel** before they leave the driveway.
 
-## Available Scripts
+The app combines:
 
-In the project directory, you can run:
+- **Google Maps Directions & Places** – for turn-by-turn routing and address auto-complete.
+- **fueleconomy.gov** REST API – to look up factory fuel-efficiency data for every make / model / year sold in the USA.
+- **User-supplied gas price** – so calculations reflect the real-world cost at the pump.
 
-### `npm start`
+The result is a simple UI that shows total distance, gallons needed and out-of-pocket cost for any trip – including multiple stops.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## ✨ Key Features
 
-### `npm test`
+• Address auto-complete powered by Google Places.<br/>
+• Add as many **intermediate stops** as you like – we'll optimise the route in the order entered.<br/>
+• Select **vehicle year → make → model** and we'll fetch its official combined MPG rating automatically.<br/>
+• Enter the **current price per gallon** (validated client-side).<br/>
+• Immediate **trip summary** with total miles and estimated cost.<br/>
+• Fully typed codebase, unit-tested with React Testing Library and end-to-end-tested with Cypress.<br/>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🏗️ Project Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```text
+src/
+ ├─ components/          # Re-usable UI & feature components
+ │   ├─ MapContainer/    # <MapContainer> (wraps Google Map + Directions panel)
+ │   ├─ RouteInput/      # Origin, destination & stops inputs
+ │   ├─ VehicleInput/    # Vehicle selector with API calls
+ │   ├─ GasPriceInput/   # Gas price field with validation
+ │   └─ TripSummary.tsx  # Displays distance & cost
+ │
+ ├─ services/            # External API helpers (FuelEconomy.gov)
+ ├─ App.tsx              # Top-level composition
+ └─ ...
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Tests live next to the code they cover (e.g. `VehicleInput.test.tsx`) and Cypress specs are located under `cypress/e2e`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🚀 Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Prerequisites
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Node.js** ≥ 18 (LTS recommended)
+- **npm** (comes with Node) or **pnpm** / **yarn**
+- A **Google Cloud project** with **Maps JavaScript API** and **Places API** enabled
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 1. Clone & install
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+$ git clone https://github.com/your-username/gas-tracker.git
+$ cd gas-tracker
+$ npm install            # or pnpm install / yarn
+```
 
-## Learn More
+### 2. Configure environment variables
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Create a `.env` file in the project root:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```dotenv
+# .env
+REACT_APP_GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY_HERE
+# Optional but recommended for custom map styling (must start with `REACT_APP_` when using CRA)
+REACT_APP_GOOGLE_MAP_ID=YOUR_MAP_ID
+```
+
+> CRA only exposes variables prefixed with `REACT_APP_` to the browser. **Never commit the real keys to Git.**
+
+### 3. Run the development server
+
+```bash
+$ npm start
+```
+
+Open <http://localhost:3000> – the app reloads on save and shows build errors in the console.
+
+---
+
+## 🧪 Running Tests
+
+### Unit & integration tests (Jest + RTL)
+
+```bash
+$ npm test
+```
+
+Press `a` to run all tests or `p` to filter by filename.
+
+### End-to-end tests (Cypress)
+
+```bash
+# Interactive runner
+$ npm run cypress:open
+
+# Headless CI run
+$ npm run test:e2e
+```
+
+The e2e script spins up the development server, waits for <http://localhost:3000>, then executes Cypress specs.
+
+---
+
+## 🛠️ Available Scripts
+
+| command                | purpose                                |
+| ---------------------- | -------------------------------------- |
+| `npm start`            | Launch dev server with hot-reload      |
+| `npm run build`        | Production build (outputs to `build/`) |
+| `npm test`             | Jest + React Testing Library suite     |
+| `npm run cypress:open` | Cypress interactive runner             |
+| `npm run test:e2e`     | Headless e2e on a built app            |
+| `npm run eject`        | CRA escape-hatch – **irreversible**    |
+
+---
+
+## 📦 Deploying
+
+After `npm run build`, upload the contents of the `build/` directory to any static host (Netlify, Vercel, S3, Firebase Hosting, GitHub Pages + gh-actions, …). Remember to supply the Google Maps API key as an environment variable (or inject it during the build step).
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repo & create a feature branch: `git checkout -b feat/my-feature`
+2. Follow existing code style & add/maintain tests.
+3. Submit a PR describing **why** and **what** you changed.
+
+All contributions – bug fixes, new features, performance tweaks, docs – are welcome!
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information (or add one if missing).
+
+---
+
+## 🙏 Acknowledgements
+
+- [@vis.gl/react-google-maps](https://github.com/visgl/react-google-maps) for the modern, composable Map components.
+- [FuelEconomy.gov](https://www.fueleconomy.gov/) for providing the public fuel-efficiency dataset.
+- [Create React App](https://create-react-app.dev/) for zero-config React tooling.
