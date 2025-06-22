@@ -24,8 +24,8 @@ The result is a simple UI that shows total distance, gallons needed and out-of-p
 <img width="405" alt="Screenshot 2025-06-22 at 4 44 20 AM" src="https://github.com/user-attachments/assets/db8e5a33-2f2a-4885-956a-07877c999559" />
 <img width="554" alt="Screenshot 2025-06-22 at 4 45 02 AM" src="https://github.com/user-attachments/assets/ae762174-6538-4f3e-84b2-440795c18160" />
 <img width="416" alt="Screenshot 2025-06-22 at 4 45 40 AM" src="https://github.com/user-attachments/assets/deaaefc0-5b8e-4478-a304-a77eb6fcbaf7" />
+<img width="436" alt="Screenshot 2025-06-22 at 4 52 59 AM" src="https://github.com/user-attachments/assets/fff349a6-e8f5-43b1-a276-5aa134745db6" />
 <img width="1435" alt="Screenshot 2025-06-22 at 4 45 59 AM" src="https://github.com/user-attachments/assets/05706db8-67f1-4e20-98e4-9bfda0cca1f5" />
-
 
 ---
 
